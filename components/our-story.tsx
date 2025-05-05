@@ -38,7 +38,7 @@ export default function OurStory() {
             something much bigger as word spread about our authentic flavors.
           </p>
           <p className="text-gray-700">
-            Our founder, Mrs. Kala, learned these recipes from her grandmother,
+            Our founder, Mrs. Kala, learned these recipes from her mother,
             who was known in her village for making the most delicious pickles.
             Using time-honored techniques and only the freshest ingredients,
             we've stayed true to those original recipes while carefully scaling

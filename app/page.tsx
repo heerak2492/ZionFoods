@@ -24,7 +24,9 @@ export default function Home() {
               </h1>
             </div>
           </Link>
+          <div className="h-100 w-100">
           <CartIcon />
+          </div>
         </header>
 
         <Suspense fallback={<div>Loading...</div>}>

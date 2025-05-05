@@ -93,9 +93,9 @@ export default function CartIcon() {
     <Link href="/cart">
       <Button variant="ghost" className="relative">
         <span className="sr-onlyn c-black">Cart</span>
-        <ShoppingCart className="h-30 w-30" />
+        <ShoppingCart className="h-100 w-100" />
         {cartCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-50 h-50 flex items-center justify-center text-xs">
             {cartCount}
           </span>
         )}
