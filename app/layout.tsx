@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   title: "ZION FOODS - Authentic Pickles & Vadiyalu",
   description:
     "Experience the rich, tangy taste of traditional pickles and the crispy delight of homemade vadiyalu from ZION FOODS.",
-    generator: 'v0.dev'
+    icons: {
+      icon: "/zionFoodLogo.jpg",
+      shortcut: "/zionFoodLogo.jpg",
+      apple: "/zionFoodLogo.jpg",
+    },
 }
 
 export default function RootLayout({
