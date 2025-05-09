@@ -101,9 +101,6 @@ export default function PicklesPage() {
       cartCountElement.textContent = cart.length.toString()
       cartCountElement.style.display = cart.length > 0 ? "flex" : "none"
     }
-
-    // Remove this line that's causing the infinite loop
-    // document.dispatchEvent(new Event("cart-updated"))
   }
 
   const handleWeightChange = (productId: string, weight: string) => {
@@ -188,7 +185,7 @@ export default function PicklesPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="sm" className="mr-4">
+              <Button variant="ghost" size="sm" className="mr-4 btn-click-feedback">
                 <ChevronLeft className="h-4 w-4 mr-2" />
                 Back to Home
               </Button>
@@ -244,10 +241,7 @@ export default function PicklesPage() {
                       </Select>
                     </div>
 
-                    <Button
-                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      onClick={() => addToCart(product)}
-                    >
+                    <Button className="w-full gradient-btn" onClick={() => addToCart(product)}>
                       <ShoppingCart className="mr-2 h-4 w-4" />
                       Add to Cart
                     </Button>

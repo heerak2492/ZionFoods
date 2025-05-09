@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { Suspense } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Logo from "@/components/logo";
-import HeroSection from "@/components/hero-section";
-import CartIcon from "@/components/cart-icon";
-import CustomerTestimonials from "@/components/customer-testimonials";
-import OurStory from "@/components/our-story";
+import { Suspense } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Logo from "@/components/logo"
+import HeroSection from "@/components/hero-section"
+import CartIcon from "@/components/cart-icon"
+import CustomerTestimonials from "@/components/customer-testimonials"
+import OurStory from "@/components/our-story"
 
 export default function Home() {
   return (
@@ -19,9 +19,7 @@ export default function Home() {
           <Link href="/">
             <div className="flex items-center gap-2">
               <Logo />
-              <h1 className="text-2xl md:text-3xl font-bold text-orange-800">
-                ZION FOODS
-              </h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-orange-800">ZION FOODS</h1>
             </div>
           </Link>
           <CartIcon />
@@ -32,29 +30,24 @@ export default function Home() {
         </Suspense>
 
         <section className="my-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-orange-800">
-            Our Specialties
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-orange-800">Our Specialties</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105">
               <div className="relative h-64">
                 <Image
-                  src="/pickelsAssorted.jpg?height=400&width=600"
+                  src="/placeholder.svg?height=400&width=600"
                   alt="Delicious Pickles"
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-orange-700 mb-2">
-                  Authentic Pickles
-                </h3>
+                <h3 className="text-2xl font-bold text-orange-700 mb-2">Authentic Pickles</h3>
                 <p className="text-gray-700 mb-4">
-                  Handcrafted with love, our pickles bring the perfect blend of
-                  spice and tang to elevate your meals.
+                  Handcrafted with love, our pickles bring the perfect blend of spice and tang to elevate your meals.
                 </p>
                 <Link href="/pickles">
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+                  <Button className="w-full gradient-btn">
                     Explore Pickles
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -65,22 +58,20 @@ export default function Home() {
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105">
               <div className="relative h-64">
                 <Image
-                  src="/vadiyaluAssorted.png?height=400&width=600"
+                  src="/placeholder.svg?height=400&width=600"
                   alt="Crispy Vadiyalu"
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-orange-700 mb-2">
-                  Crispy Vadiyalu
-                </h3>
+                <h3 className="text-2xl font-bold text-orange-700 mb-2">Crispy Vadiyalu</h3>
                 <p className="text-gray-700 mb-4">
-                  Crunchy, flavorful, and irresistible. Our vadiyalu are the
-                  perfect accompaniment to any traditional meal.
+                  Crunchy, flavorful, and irresistible. Our vadiyalu are the perfect accompaniment to any traditional
+                  meal.
                 </p>
                 <Link href="/vadiyalu">
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+                  <Button className="w-full gradient-btn">
                     Explore Vadiyalu
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -94,13 +85,8 @@ export default function Home() {
 
         <section className="my-16 bg-orange-100 rounded-2xl p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-orange-800 mb-4">
-              Why Choose ZION FOODS?
-            </h2>
-            <p className="text-lg text-gray-700">
-              We bring authentic flavors straight from our kitchen to your
-              table.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-orange-800 mb-4">Why Choose ZION FOODS?</h2>
+            <p className="text-lg text-gray-700">We bring authentic flavors straight from our kitchen to your table.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -124,13 +110,8 @@ export default function Home() {
                   <path d="M12 16v.01" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-orange-700 mb-2">
-                Authentic Recipes
-              </h3>
-              <p className="text-gray-600">
-                Traditional recipes passed down through generations for
-                authentic taste.
-              </p>
+              <h3 className="text-xl font-bold text-orange-700 mb-2">Authentic Recipes</h3>
+              <p className="text-gray-600">Traditional recipes passed down through generations for authentic taste.</p>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105">
@@ -154,12 +135,9 @@ export default function Home() {
                   <path d="M18.5 6v1a2 2 0 0 1-2 2H8" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-orange-700 mb-2">
-                Quality Ingredients
-              </h3>
+              <h3 className="text-xl font-bold text-orange-700 mb-2">Quality Ingredients</h3>
               <p className="text-gray-600">
-                We use only the freshest, highest quality ingredients in all our
-                products.
+                We use only the freshest, highest quality ingredients in all our products.
               </p>
             </div>
 
@@ -181,13 +159,8 @@ export default function Home() {
                   <path d="m9 12 2 2 4-4" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-orange-700 mb-2">
-                Preservative Free
-              </h3>
-              <p className="text-gray-600">
-                No artificial preservatives, just natural goodness in every
-                bite.
-              </p>
+              <h3 className="text-xl font-bold text-orange-700 mb-2">Preservative Free</h3>
+              <p className="text-gray-600">No artificial preservatives, just natural goodness in every bite.</p>
             </div>
           </div>
         </section>
@@ -195,90 +168,50 @@ export default function Home() {
         <CustomerTestimonials />
 
         <section className="my-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-orange-800">
-            Customer Favorites
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-orange-800">Customer Favorites</h2>
           <p className="text-lg text-gray-700 mb-8">
             Our most loved products that keep customers coming back for more!
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              {
-                id: "mango-pickle",
-                name: "Mango Pickle",
-                type: "pickle",
-                price: 120,
-              },
-              {
-                id: "garlic-pickle",
-                name: "Garlic Pickle",
-                type: "pickle",
-                price: 150,
-              },
-              {
-                id: "urad-dal-vadiyalu",
-                name: "Urad Dal Vadiyalu",
-                type: "vadiyalu",
-                price: 180,
-              },
-              {
-                id: "chilli-vadiyalu",
-                name: "Chilli Vadiyalu",
-                type: "vadiyalu",
-                price: 160,
-              },
+              { id: "mango-pickle", name: "Mango Pickle", type: "pickle", price: 120 },
+              { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", price: 150 },
+              { id: "urad-dal-vadiyalu", name: "Urad Dal Vadiyalu", type: "vadiyalu", price: 180 },
+              { id: "chilli-vadiyalu", name: "Chilli Vadiyalu", type: "vadiyalu", price: 160 },
             ].map((product, index) => (
               <div
                 key={index}
                 className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
               >
                 <div className="relative h-48">
-                  <Image
-                    src="/placeholder.svg?height=300&width=400"
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src="/placeholder.svg?height=300&width=400" alt={product.name} fill className="object-cover" />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-bold text-orange-700">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 capitalize">
-                    {product.type}
-                  </p>
+                  <h3 className="text-lg font-bold text-orange-700">{product.name}</h3>
+                  <p className="text-sm text-gray-500 capitalize">{product.type}</p>
                   <div className="flex justify-between items-center mt-3">
-                    <span className="text-lg font-bold">
-                      ₹{product.price}/100g
-                    </span>
+                    <span className="text-lg font-bold">₹{product.price}/100g</span>
                     <div className="flex gap-2">
                       <Link href={`/${product.type}s`}>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-orange-600 border-orange-600 hover:bg-orange-50"
-                        >
+                        <Button size="sm" variant="outline" className="outline-btn">
                           View
                         </Button>
                       </Link>
                       <Button
                         size="sm"
-                        className="bg-orange-600 hover:bg-orange-700"
+                        className="gradient-btn"
                         onClick={() => {
                           // This will be handled by client-side JavaScript
-                          const event = new CustomEvent(
-                            "add-to-cart-favorite",
-                            {
-                              detail: {
-                                id: product.id,
-                                name: product.name,
-                                price: product.price,
-                                type: product.type,
-                              },
-                            }
-                          );
-                          document.dispatchEvent(event);
+                          const event = new CustomEvent("add-to-cart-favorite", {
+                            detail: {
+                              id: product.id,
+                              name: product.name,
+                              price: product.price,
+                              type: product.type,
+                            },
+                          })
+                          document.dispatchEvent(event)
                         }}
                       >
                         Add
@@ -300,9 +233,7 @@ export default function Home() {
               <h2 className="text-xl font-bold">ZION FOODS</h2>
             </div>
             <div className="text-center md:text-right">
-              <p className="mb-2">
-                Contact us for delicious homemade pickles and vadiyalu
-              </p>
+              <p className="mb-2">Contact us for delicious homemade pickles and vadiyalu</p>
               <p className="font-bold">WhatsApp: +91 83282 60091</p>
             </div>
           </div>
@@ -312,5 +243,5 @@ export default function Home() {
         </div>
       </footer>
     </main>
-  );
+  )
 }
