@@ -4,12 +4,14 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ChevronLeft, ShoppingCart } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
 import CartIcon from "@/components/cart-icon"
+import ProductQuantityControl from "@/components/product-quantity-control"
+import SearchBar from "@/components/search-bar"
 
 // Product data - in a real app, this would come from an API or database
 const vadiyaluProducts = [
@@ -20,6 +22,7 @@ const vadiyaluProducts = [
     tagline: "Crispy Clouds of Flavor - The Ultimate Comfort Food!",
     price: 180, // price per 100g
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
   {
     id: "rice-vadiyalu",
@@ -28,6 +31,7 @@ const vadiyaluProducts = [
     tagline: "Crunch in Every Bite - Irresistibly Light and Crispy!",
     price: 160,
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
   {
     id: "chilli-vadiyalu",
@@ -36,6 +40,7 @@ const vadiyaluProducts = [
     tagline: "Fiery Crunch - For Those Who Love a Spicy Kick!",
     price: 170,
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
   {
     id: "garlic-vadiyalu",
@@ -44,6 +49,7 @@ const vadiyaluProducts = [
     tagline: "Aromatic Crunch - Garlic Lovers Rejoice!",
     price: 190,
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
   {
     id: "mixed-lentil-vadiyalu",
@@ -52,6 +58,7 @@ const vadiyaluProducts = [
     tagline: "Protein-Packed Crunch - Healthy Never Tasted So Good!",
     price: 200,
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
   {
     id: "coconut-vadiyalu",
@@ -60,10 +67,11 @@ const vadiyaluProducts = [
     tagline: "Tropical Delight - A Sweet & Savory Crunch!",
     price: 210,
     image: "/placeholder.svg?height=400&width=600",
+    type: "vadiyalu",
   },
 ]
 
-// Weight options in grams
+// Weight options in grams with display labels
 const weightOptions = [
   { value: "100", label: "100g" },
   { value: "250", label: "250g" },
@@ -76,10 +84,25 @@ const weightOptions = [
 
 export default function VadiyaluPage() {
   const [selectedWeights, setSelectedWeights] = useState<Record<string, string>>({})
+  const [searchQuery, setSearchQuery] = useState("")
   const { toast } = useToast()
 
-  // Initialize cart from localStorage
+  // Initialize selected weights from localStorage if available
   useEffect(() => {
+    const savedWeights: Record<string, string> = {}
+
+    vadiyaluProducts.forEach((product) => {
+      const savedWeight = localStorage.getItem(`weight_${product.id}`)
+      if (savedWeight) {
+        savedWeights[product.id] = savedWeight
+      } else {
+        savedWeights[product.id] = "100" // Default to 100g
+      }
+    })
+
+    setSelectedWeights(savedWeights)
+
+    // Initialize cart count
     updateCartCount()
 
     // Set up event listener for cart updates
@@ -94,6 +117,13 @@ export default function VadiyaluPage() {
     }
   }, [])
 
+  // Save selected weights to localStorage when they change
+  useEffect(() => {
+    Object.entries(selectedWeights).forEach(([productId, weight]) => {
+      localStorage.setItem(`weight_${productId}`, weight)
+    })
+  }, [selectedWeights])
+
   const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem("zionFoodsCart") || "[]")
     const cartCountElement = document.getElementById("cart-count")
@@ -104,37 +134,73 @@ export default function VadiyaluPage() {
   }
 
   const handleWeightChange = (productId: string, weight: string) => {
+    // Update the selected weight
     setSelectedWeights((prev) => ({
       ...prev,
       [productId]: weight,
     }))
+
+    // Notify about weight change
+    const weightChangeEvent = new CustomEvent("weight-changed", {
+      detail: { productId, weight },
+    })
+    document.dispatchEvent(weightChangeEvent)
   }
 
-  const addToCart = (product: any) => {
+  const getWeightLabel = (weightInGrams: string) => {
+    const option = weightOptions.find((opt) => opt.value === weightInGrams)
+    return option ? option.label : weightInGrams + "g"
+  }
+
+  const addToCart = (product: any, quantity: number) => {
     const weight = selectedWeights[product.id] || "100"
     const weightInGrams = Number.parseInt(weight)
-    const totalPrice = (product.price * weightInGrams) / 100
+    const weightLabel = getWeightLabel(weight)
+    const pricePerUnit = product.price
+    const totalPrice = (pricePerUnit * weightInGrams) / 100
 
     // Get existing cart
     const cart = JSON.parse(localStorage.getItem("zionFoodsCart") || "[]")
 
-    // Check if product already exists in cart
-    const existingProductIndex = cart.findIndex((item: any) => item.id === product.id && item.weight === weightInGrams)
+    // Create a unique ID for this product+weight combination
+    const itemId = `${product.id}_${weight}`
+
+    // Check if product with this specific weight already exists in cart
+    const existingProductIndex = cart.findIndex((item: any) => item.itemId === itemId)
 
     if (existingProductIndex >= 0) {
       // Update quantity if product already exists
-      cart[existingProductIndex].quantity += 1
+      // If quantity is negative, we're removing from cart
+      const newQuantity = cart[existingProductIndex].quantity + quantity
+
+      if (newQuantity <= 0) {
+        // Remove item if quantity becomes zero or negative
+        cart.splice(existingProductIndex, 1)
+
+        // Dispatch event to reset the specific product quantity control
+        const itemRemovedEvent = new CustomEvent("item-removed", {
+          detail: { itemId },
+        })
+        document.dispatchEvent(itemRemovedEvent)
+      } else {
+        // Otherwise update the quantity
+        cart[existingProductIndex].quantity = newQuantity
+      }
     } else {
-      // Add new product to cart
-      cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        weight: weightInGrams,
-        quantity: 1,
-        totalPrice,
-        type: "vadiyalu",
-      })
+      // Only add new product to cart if quantity is positive
+      if (quantity > 0) {
+        cart.push({
+          itemId: itemId,
+          id: product.id,
+          name: product.name,
+          price: pricePerUnit,
+          weight: weightInGrams,
+          weightLabel: weightLabel,
+          quantity: quantity,
+          totalPrice,
+          type: "vadiyalu",
+        })
+      }
     }
 
     // Save cart to localStorage
@@ -143,19 +209,22 @@ export default function VadiyaluPage() {
     // Update cart count
     updateCartCount()
 
-    // Dispatch event to notify other components - do this only once
+    // Dispatch event to notify other components
     document.dispatchEvent(new Event("cart-updated"))
-
-    // Show toast notification
-    toast({
-      title: "Added to cart!",
-      description: `${product.name} (${weightInGrams}g) has been added to your cart.`,
-      duration: 3000,
-    })
-
-    // Make toast function available globally for other components
-    window.showToast = toast
   }
+
+  // Handle search
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
+
+  // Filter products based on search query
+  const filteredProducts = vadiyaluProducts.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.tagline.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -204,13 +273,20 @@ export default function VadiyaluPage() {
           </p>
         </div>
 
+        <SearchBar
+          placeholder="Search for vadiyalu..."
+          className="mb-8"
+          onSearch={handleSearch}
+          products={vadiyaluProducts}
+        />
+
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {vadiyaluProducts.map((product) => (
+          {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={itemVariants}>
               <Card className="overflow-hidden h-full flex flex-col">
                 <div className="relative h-64">
@@ -241,10 +317,13 @@ export default function VadiyaluPage() {
                       </Select>
                     </div>
 
-                    <Button className="w-full gradient-btn" onClick={() => addToCart(product)}>
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Add to Cart
-                    </Button>
+                    <ProductQuantityControl
+                      productId={product.id}
+                      weight={selectedWeights[product.id] || "100"}
+                      onAdd={(quantity) => addToCart(product, quantity)}
+                      productName={product.name}
+                      weightLabel={getWeightLabel(selectedWeights[product.id] || "100")}
+                    />
                   </div>
                 </CardContent>
               </Card>

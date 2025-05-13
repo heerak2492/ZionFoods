@@ -35,7 +35,7 @@ export default function Logo({ white = false, onClick }: LogoProps) {
         src="/zionFoodLogo.jpg"
         alt="Delicious Pickles"
         fill
-        className="object-cover"
+        className="object-cover rounded-2xl shadow-xl"
       />
     </div>
   );

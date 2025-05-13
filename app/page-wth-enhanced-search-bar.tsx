@@ -11,93 +11,41 @@ import CartIcon from "@/components/cart-icon"
 import CustomerTestimonials from "@/components/customer-testimonials"
 import OurStory from "@/components/our-story"
 import ProductQuantityControl from "@/components/product-quantity-control"
-import { useToast } from "@/components/ui/use-toast"
 import SearchBar from "@/components/search-bar"
+import { useToast } from "@/components/ui/use-toast"
 
-// All products for search
+// Combined product data for search
 const allProducts = [
-  {
-    id: "mango-pickle",
-    name: "Mango Pickle",
-    type: "pickle",
-    price: 120,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: "garlic-pickle",
-    name: "Garlic Pickle",
-    type: "pickle",
-    price: 150,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: "lemon-pickle",
-    name: "Lemon Pickle",
-    type: "pickle",
-    price: 110,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: "ginger-pickle",
-    name: "Ginger Pickle",
-    type: "pickle",
-    price: 140,
-    image: "/placeholder.svg?height=100&width=100",
-  },
+  { id: "mango-pickle", name: "Mango Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
+  { id: "lemon-pickle", name: "Lemon Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
+  { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
+  { id: "ginger-pickle", name: "Ginger Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
   {
     id: "mixed-vegetable-pickle",
     name: "Mixed Vegetable Pickle",
     type: "pickle",
-    price: 130,
     image: "/placeholder.svg?height=100&width=100",
   },
-  {
-    id: "tomato-pickle",
-    name: "Tomato Pickle",
-    type: "pickle",
-    price: 100,
-    image: "/placeholder.svg?height=100&width=100",
-  },
+  { id: "tomato-pickle", name: "Tomato Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
   {
     id: "urad-dal-vadiyalu",
     name: "Urad Dal Vadiyalu",
     type: "vadiyalu",
-    price: 180,
     image: "/placeholder.svg?height=100&width=100",
   },
-  {
-    id: "rice-vadiyalu",
-    name: "Rice Vadiyalu",
-    type: "vadiyalu",
-    price: 160,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: "chilli-vadiyalu",
-    name: "Chilli Vadiyalu",
-    type: "vadiyalu",
-    price: 160,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: "garlic-vadiyalu",
-    name: "Garlic Vadiyalu",
-    type: "vadiyalu",
-    price: 190,
-    image: "/placeholder.svg?height=100&width=100",
-  },
+  { id: "rice-vadiyalu", name: "Rice Vadiyalu", type: "vadiyalu", image: "/placeholder.svg?height=100&width=100" },
+  { id: "chilli-vadiyalu", name: "Chilli Vadiyalu", type: "vadiyalu", image: "/placeholder.svg?height=100&width=100" },
+  { id: "garlic-vadiyalu", name: "Garlic Vadiyalu", type: "vadiyalu", image: "/placeholder.svg?height=100&width=100" },
   {
     id: "mixed-lentil-vadiyalu",
     name: "Mixed Lentil Vadiyalu",
     type: "vadiyalu",
-    price: 200,
     image: "/placeholder.svg?height=100&width=100",
   },
   {
     id: "coconut-vadiyalu",
     name: "Coconut Vadiyalu",
     type: "vadiyalu",
-    price: 210,
     image: "/placeholder.svg?height=100&width=100",
   },
 ]
@@ -202,6 +150,10 @@ export default function Home() {
       )
     : favoriteProducts
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       <div className="container mx-auto px-4 py-8">
@@ -223,7 +175,7 @@ export default function Home() {
           <SearchBar
             placeholder="Search for delicious products..."
             className="w-full"
-            setSearchQuery={setSearchQuery}
+            onSearch={handleSearch}
             products={allProducts}
           />
         </div>
@@ -257,7 +209,7 @@ export default function Home() {
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105">
               <div className="relative h-64">
                 <Image
-                  src="/vadiyaluAssorted.png?height=400&width=600"
+                  src="/placeholder.svg?height=400&width=600"
                   alt="Crispy Vadiyalu"
                   fill
                   className="object-cover"

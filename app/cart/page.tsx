@@ -4,18 +4,31 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ChevronLeft, Trash2, ShoppingBag } from "lucide-react"
+import { ChevronLeft, Trash2, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import CartIcon from "@/components/cart-icon"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface CartItem {
+  itemId: string
   id: string
   name: string
   price: number
   weight: number
+  weightLabel: string
   quantity: number
   totalPrice: number
   type: string
@@ -24,10 +37,27 @@ interface CartItem {
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false)
   const { toast } = useToast()
 
+  // Load cart from localStorage and set up event listeners
   useEffect(() => {
-    // Load cart from localStorage
+    loadCartFromStorage()
+
+    // Set up event listener for cart updates
+    const handleStorageChange = () => {
+      loadCartFromStorage()
+    }
+
+    document.addEventListener("cart-updated", handleStorageChange)
+
+    return () => {
+      document.removeEventListener("cart-updated", handleStorageChange)
+    }
+  }, [])
+
+  // Load cart from localStorage and calculate total
+  const loadCartFromStorage = () => {
     const cart = JSON.parse(localStorage.getItem("zionFoodsCart") || "[]")
     setCartItems(cart)
 
@@ -37,25 +67,7 @@ export default function CartPage() {
     }, 0)
 
     setTotalAmount(total)
-
-    // Set up event listener for cart updates
-    const handleStorageChange = () => {
-      const updatedCart = JSON.parse(localStorage.getItem("zionFoodsCart") || "[]")
-      setCartItems(updatedCart)
-
-      const updatedTotal = updatedCart.reduce((sum: number, item: CartItem) => {
-        return sum + (item.price * item.weight * item.quantity) / 100
-      }, 0)
-
-      setTotalAmount(updatedTotal)
-    }
-
-    document.addEventListener("cart-updated", handleStorageChange)
-
-    return () => {
-      document.removeEventListener("cart-updated", handleStorageChange)
-    }
-  }, [])
+  }
 
   const updateCartCount = () => {
     const cartCountElement = document.getElementById("cart-count")
@@ -70,12 +82,15 @@ export default function CartPage() {
   }, [cartItems])
 
   const removeFromCart = (index: number) => {
+    const itemToRemove = cartItems[index]
     const newCart = [...cartItems]
     newCart.splice(index, 1)
-    setCartItems(newCart)
 
     // Save to localStorage
     localStorage.setItem("zionFoodsCart", JSON.stringify(newCart))
+
+    // Update state
+    setCartItems(newCart)
 
     // Recalculate total
     const total = newCart.reduce((sum, item) => {
@@ -84,8 +99,14 @@ export default function CartPage() {
 
     setTotalAmount(total)
 
-    // Dispatch event to notify other components - do this only once
+    // Dispatch event to notify other components
     document.dispatchEvent(new Event("cart-updated"))
+
+    // Dispatch event to reset the specific product quantity control
+    const itemRemovedEvent = new CustomEvent("item-removed", {
+      detail: { itemId: itemToRemove.itemId },
+    })
+    document.dispatchEvent(itemRemovedEvent)
 
     toast({
       title: "Item removed",
@@ -94,15 +115,62 @@ export default function CartPage() {
     })
   }
 
+  const clearCart = () => {
+    // Clear cart state
+    setCartItems([])
+    setTotalAmount(0)
+
+    // Get all localStorage keys
+    const allKeys = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (key) {
+        allKeys.push(key)
+      }
+    }
+
+    // Remove all quantity and control related items from localStorage
+    allKeys.forEach((key) => {
+      if (key.startsWith("quantity_") || key.startsWith("controls_") || key === "zionFoodsCart") {
+        localStorage.removeItem(key)
+      }
+    })
+
+    // Ensure cart is completely cleared
+    localStorage.removeItem("zionFoodsCart")
+
+    // Set empty array as fallback
+    localStorage.setItem("zionFoodsCart", "[]")
+
+    // Dispatch event to notify other components
+    document.dispatchEvent(new Event("cart-updated"))
+
+    // Dispatch event to reset all quantity controls
+    const clearCartEvent = new CustomEvent("cart-cleared")
+    document.dispatchEvent(clearCartEvent)
+
+    toast({
+      title: "Cart cleared",
+      description: "All items have been removed from your cart.",
+      duration: 3000,
+    })
+  }
+
   const updateQuantity = (index: number, newQuantity: number) => {
-    if (newQuantity < 1) return
+    if (newQuantity < 1) {
+      // If quantity becomes less than 1, remove the item
+      removeFromCart(index)
+      return
+    }
 
     const newCart = [...cartItems]
     newCart[index].quantity = newQuantity
-    setCartItems(newCart)
 
     // Save to localStorage
     localStorage.setItem("zionFoodsCart", JSON.stringify(newCart))
+
+    // Update state
+    setCartItems(newCart)
 
     // Recalculate total
     const total = newCart.reduce((sum, item) => {
@@ -111,8 +179,16 @@ export default function CartPage() {
 
     setTotalAmount(total)
 
-    // Dispatch event to notify other components - do this only once
+    // Dispatch event to notify other components
     document.dispatchEvent(new Event("cart-updated"))
+
+    // Show toast notification
+    const item = newCart[index]
+    toast({
+      title: newQuantity > cartItems[index].quantity ? "Quantity increased" : "Quantity decreased",
+      description: `${item.name} (${item.weightLabel}) quantity updated to ${newQuantity}.`,
+      duration: 2000,
+    })
   }
 
   const placeOrder = () => {
@@ -130,7 +206,7 @@ export default function CartPage() {
     let message = "Hello ZION FOODS, I would like to place an order for:\n\n"
 
     cartItems.forEach((item) => {
-      message += `${item.name} - ${item.weight}g x ${item.quantity} = ₹${(item.price * item.weight * item.quantity) / 100}\n`
+      message += `${item.name} - ${item.weightLabel} × ${item.quantity} = ₹${(item.price * item.weight * item.quantity) / 100}\n`
     })
 
     message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}`
@@ -138,8 +214,14 @@ export default function CartPage() {
     // Encode message for WhatsApp URL
     const encodedMessage = encodeURIComponent(message)
 
+    // Set order placed flag
+    setIsOrderPlaced(true)
+
     // Open WhatsApp with the message
     window.open(`https://wa.me/918328260091?text=${encodedMessage}`, "_blank")
+
+    // Clear cart after order is placed
+    clearCart()
   }
 
   const containerVariants = {
@@ -184,7 +266,11 @@ export default function CartPage() {
           <div className="text-center py-16">
             <ShoppingBag className="h-16 w-16 mx-auto text-orange-300 mb-4" />
             <h2 className="text-2xl font-bold text-gray-700 mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-8">Looks like you haven't added any items to your cart yet.</p>
+            <p className="text-gray-500 mb-8">
+              {isOrderPlaced
+                ? "Thank you for your order! We'll process it soon."
+                : "Looks like you haven't added any items to your cart yet."}
+            </p>
             <Link href="/">
               <Button className="gradient-btn">Continue Shopping</Button>
             </Link>
@@ -192,8 +278,34 @@ export default function CartPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <motion.div className="lg:col-span-2" variants={containerVariants} initial="hidden" animate="visible">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-orange-800">Cart Items ({cartItems.length})</h2>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="text-red-500 border-red-500 hover:bg-red-50">
+                      <X className="h-4 w-4 mr-2" />
+                      Clear Cart
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Clear your cart?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will remove all items from your cart. This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={clearCart} className="bg-red-500 hover:bg-red-600">
+                        Clear Cart
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+
               {cartItems.map((item, index) => (
-                <motion.div key={index} variants={itemVariants}>
+                <motion.div key={item.itemId} variants={itemVariants}>
                   <Card className="mb-4 overflow-hidden">
                     <CardContent className="p-6">
                       <div className="cart-item-mobile">
@@ -210,7 +322,7 @@ export default function CartPage() {
                           <h3 className="text-lg font-bold text-orange-700">{item.name}</h3>
                           <p className="text-sm text-gray-500 capitalize">{item.type}</p>
                           <p className="text-sm text-gray-700 mt-1">
-                            ₹{item.price}/100g × {item.weight}g
+                            ₹{item.price}/100g × {item.weightLabel}
                           </p>
                         </div>
 
@@ -265,7 +377,7 @@ export default function CartPage() {
                     {cartItems.map((item, index) => (
                       <div key={index} className="flex justify-between text-sm">
                         <span>
-                          {item.name} ({item.weight}g) × {item.quantity}
+                          {item.name} ({item.weightLabel}) × {item.quantity}
                         </span>
                         <span>₹{((item.price * item.weight * item.quantity) / 100).toFixed(2)}</span>
                       </div>
