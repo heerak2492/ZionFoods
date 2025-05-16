@@ -3,35 +3,35 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { Search } from 'lucide-react'
+import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 
 interface SearchProduct {
-  id: string;
-  name: string;
-  type: string;
-  image?: string;
+  id: string
+  name: string
+  type: string
+  image?: string
 }
 
 // Update the SearchBarProps interface to make products optional with a default value
 interface SearchBarProps {
-  placeholder?: string;
-  className?: string;
-  onSearch?: (query: string) => void;
-  products?: SearchProduct[];
-  setSearchQuery?: (query: string) => void;
+  placeholder?: string
+  className?: string
+  onSearch?: (query: string) => void
+  products?: SearchProduct[]
+  setSearchQuery?: (query: string) => void
 }
 
 // Update the function signature to provide a default empty array for products
-export default function SearchBar({ 
-  placeholder = "Search...", 
-  className = "", 
-  onSearch, 
-  products = [], 
-  setSearchQuery 
+export default function SearchBar({
+  placeholder = "Search...",
+  className = "",
+  onSearch,
+  products = [],
+  setSearchQuery,
 }: SearchBarProps) {
   const [searchQuery, setSearchQueryState] = useState("")
   const [suggestions, setSuggestions] = useState<string[]>([])
@@ -140,6 +140,16 @@ export default function SearchBar({
     }
   }
 
+  // Helper function to get the correct URL for product type
+  const getProductTypeUrl = (type: string) => {
+    // Handle special cases for pluralization
+    if (type === "pickle") return "/pickles"
+    if (type === "vadiyalu") return "/vadiyalu"
+
+    // Default pluralization (add 's') for other types
+    return `/${type}s`
+  }
+
   return (
     <div className={`relative ${className}`} ref={searchRef}>
       <form onSubmit={handleSubmit}>
@@ -188,9 +198,18 @@ export default function SearchBar({
                 {filteredProducts.map((product) => (
                   <Link
                     key={product.id}
-                    href={`/${product.type}s`}
+                    href={getProductTypeUrl(product.type)}
                     className="px-3 py-2 hover:bg-orange-50 cursor-pointer rounded-md flex items-center"
-                    onClick={() => setShowSuggestions(false)}
+                    onClick={() => {
+                      setShowSuggestions(false)
+                      // Set search query to product name to filter the destination page
+                      if (setSearchQuery) {
+                        setSearchQuery(product.name)
+                      }
+                      if (onSearch) {
+                        onSearch(product.name)
+                      }
+                    }}
                   >
                     <div className="relative w-8 h-8 rounded-full overflow-hidden mr-3">
                       <Image

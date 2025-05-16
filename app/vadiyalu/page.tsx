@@ -248,6 +248,21 @@ export default function VadiyaluPage() {
     },
   }
 
+  // Function to scroll to a product by ID
+  useEffect(() => {
+    // If there's a search query and filtered products, scroll to the first matching product
+    if (searchQuery && filteredProducts.length > 0) {
+      const firstMatchingProduct = filteredProducts[0]
+      const productElement = document.getElementById(`product-${firstMatchingProduct.id}`)
+      if (productElement) {
+        // Add a small delay to ensure the DOM has updated
+        setTimeout(() => {
+          productElement.scrollIntoView({ behavior: "smooth", block: "center" })
+        }, 100)
+      }
+    }
+  }, [searchQuery, filteredProducts])
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50">
       <div className="container mx-auto px-4 py-8">
@@ -278,6 +293,7 @@ export default function VadiyaluPage() {
           className="mb-8"
           onSearch={handleSearch}
           products={vadiyaluProducts}
+          setSearchQuery={setSearchQuery}
         />
 
         <motion.div
@@ -287,7 +303,7 @@ export default function VadiyaluPage() {
           animate="visible"
         >
           {filteredProducts.map((product) => (
-            <motion.div key={product.id} variants={itemVariants}>
+            <motion.div key={product.id} id={`product-${product.id}`} variants={itemVariants}>
               <Card className="overflow-hidden h-full flex flex-col">
                 <div className="relative h-64">
                   <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
