@@ -230,11 +230,11 @@ export default function ProductQuantityControl({
               <span className="sr-only">Increase quantity</span>
             </Button>
 
-            {!hideAddButton && (
+            {/* {!hideAddButton && (
               <Button type="button" className="h-10 px-3 rounded-none gradient-btn" onClick={handleAdd}>
                 {isAdded ? <Check className="h-4 w-4" /> : "Add"}
               </Button>
-            )}
+            )} */}
           </motion.div>
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">

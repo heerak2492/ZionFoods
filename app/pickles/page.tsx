@@ -11,25 +11,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast"
 import CartIcon from "@/components/cart-icon"
 import ProductQuantityControl from "@/components/product-quantity-control"
-import SearchBar from "@/components/search-bar"
+// import SearchBar from "@/components/search-bar"
 
 // Product data - in a real app, this would come from an API or database
 const pickleProducts = [
   {
-    id: "mango-pickle",
-    name: "Mango Pickle",
-    description: "A tangy, spicy delight that brings the authentic taste of summer mangoes to your table.",
-    tagline: "The King of Pickles - A Royal Treat for Your Taste Buds!",
-    price: 120, // price per 100g
-    image: "/placeholder.svg?height=400&width=600",
+    id: "chicken-pickle",
+    name: "Chicken Pickle",
+    description: "Succulent pieces of chicken slow-cooked in fiery spices, offering a rich and savory experience.",
+    tagline: "Meaty. Spicy. Addictive – A Feast in Every Spoon!",
+    price: 180,
+    image: "/pickles/chickenPickle.png?height=400&width=600",
     type: "pickle",
   },
   {
-    id: "lemon-pickle",
-    name: "Lemon Pickle",
-    description: "Zesty, tangy lemon pickle made with the freshest citrus and aromatic spices.",
-    tagline: "Sunshine in a Jar - Brighten Every Meal!",
-    price: 110,
+    id: "prawns-pickle",
+    name: "Prawns Pickle",
+    description: "Juicy prawns marinated in a blend of traditional spices for a seafood pickle that packs a punch.",
+    tagline: "Godavari’s Boldest Bite – A Coastal Classic!",
+    price: 200,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
@@ -37,39 +37,76 @@ const pickleProducts = [
     id: "garlic-pickle",
     name: "Garlic Pickle",
     description: "Bold, pungent garlic pickle that adds a kick of flavor to any dish.",
-    tagline: "Bold Flavor, Unforgettable Taste - The Garlic Lover's Dream!",
+    tagline: "Bold Flavor, Unforgettable Taste – The Garlic Lover's Dream!",
     price: 150,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
   {
-    id: "ginger-pickle",
-    name: "Ginger Pickle",
-    description: "Spicy, warming ginger pickle that adds zing to your meals and aids digestion.",
-    tagline: "The Spice of Life - Heat Up Your Meals!",
+    id: "ulli-avakai-pickle",
+    name: "Ulli Avakai Pickle (Mango)",
+    description: "A unique South Indian twist combining shallots and mangoes in a spicy mustard-based marinade.",
+    tagline: "Traditional Meets Tangy – A Must-Try Regional Favorite!",
     price: 140,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
   {
-    id: "mixed-vegetable-pickle",
-    name: "Mixed Vegetable Pickle",
-    description: "A colorful medley of vegetables in a perfectly balanced spice blend.",
-    tagline: "A Symphony of Flavors - Every Bite a New Adventure!",
+    id: "allam-pickle",
+    name: "Allam Pickle (Ginger)",
+    description: "Fiery ginger pickle bursting with heat and earthy flavor, perfect for spice enthusiasts.",
+    tagline: "Zing That Stings – A Ginger Punch in Every Bite!",
+    price: 140,
+    image: "/placeholder.svg?height=400&width=600",
+    type: "pickle",
+  },
+  {
+    id: "gongura-pickle",
+    name: "Gongura Pickle",
+    description: "A tangy and spicy Andhra delicacy made from sorrel leaves, rich in iron and flavor.",
+    tagline: "Sour, Spicy, Signature – The Taste of Andhra!",
     price: 130,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
   {
-    id: "tomato-pickle",
+    id: "tomatoe-pickle",
     name: "Tomato Pickle",
     description: "Sweet and tangy tomato pickle that complements rice, roti, and more.",
-    tagline: "Sweet, Tangy, Irresistible - The Perfect Companion!",
+    tagline: "Sweet, Tangy, Irresistible – The Perfect Companion!",
     price: 100,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
+  {
+    id: "magai-pickle",
+    name: "Magai Pickle",
+    description: "Fermented sun-dried mango pieces infused with garlic and a bold spice blend, rich in flavor and tradition.",
+    tagline: "Aged to Perfection – A Heritage of Heat and Taste!",
+    price: 160,
+    image: "/placeholder.svg?height=400&width=600",
+    type: "pickle",
+  },
+  {
+    id: "corriander-pickle",
+    name: "Coriander Pickle",
+    description: "A refreshing twist made from fresh coriander leaves, offering a herby, tangy burst of flavor.",
+    tagline: "Green Goodness – Freshness in Every Spoon!",
+    price: 120,
+    image: "/placeholder.svg?height=400&width=600",
+    type: "pickle",
+  },
+  {
+    id: "avakai-pickle",
+    name: "Avakai Pickle",
+    description: "Classic mango pickle from Andhra, known for its mustard and chili kick that defines the genre.",
+    tagline: "The Legend of Andhra – Mango with Might!",
+    price: 130,
+    image: "/placeholder.svg?height=400&width=600",
+    type: "pickle",
+  }
 ]
+
 
 // Weight options in grams with display labels
 const weightOptions = [
@@ -288,13 +325,13 @@ export default function PicklesPage() {
           </p>
         </div>
 
-        <SearchBar
+        {/* <SearchBar
           placeholder="Search for pickles..."
           className="mb-8"
           onSearch={handleSearch}
           products={pickleProducts}
           setSearchQuery={setSearchQuery}
-        />
+        /> */}
 
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -306,7 +343,7 @@ export default function PicklesPage() {
             <motion.div key={product.id} id={`product-${product.id}`} variants={itemVariants}>
               <Card className="overflow-hidden h-full flex flex-col">
                 <div className="relative h-64">
-                  <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+                  <Image src={`/products/${product.id}.png`} alt={product.name} fill className="object-cover" />
                 </div>
                 <CardContent className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-orange-700 mb-1">{product.name}</h3>

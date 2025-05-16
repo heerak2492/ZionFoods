@@ -16,17 +16,11 @@ import { useToast } from "@/components/ui/use-toast"
 
 // Combined product data for search
 const allProducts = [
-  { id: "mango-pickle", name: "Mango Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
-  { id: "lemon-pickle", name: "Lemon Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
-  { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
-  { id: "ginger-pickle", name: "Ginger Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
-  {
-    id: "mixed-vegetable-pickle",
-    name: "Mixed Vegetable Pickle",
-    type: "pickle",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  { id: "tomato-pickle", name: "Tomato Pickle", type: "pickle", image: "/placeholder.svg?height=100&width=100" },
+  { id: "mango-pickle", name: "Mango Pickle", type: "pickle", image: "/pickles?height=100&width=100" },
+  { id: "lemon-pickle", name: "Lemon Pickle", type: "pickle", image: "/pickles?height=100&width=100" },
+  { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", image: "/pickles?height=100&width=100" },
+  { id: "ginger-pickle", name: "Ginger Pickle", type: "pickle", image: "/pickles?height=100&width=100" },
+  { id: "tomato-pickle", name: "Tomato Pickle", type: "pickle", image: "/pickles?height=100&width=100" },
   {
     id: "urad-dal-vadiyalu",
     name: "Urad Dal Vadiyalu",
@@ -54,8 +48,8 @@ export default function Home() {
   const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState("")
   const [favoriteProducts, setFavoriteProducts] = useState([
-    { id: "mango-pickle", name: "Mango Pickle", type: "pickle", price: 120 },
-    { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", price: 150 },
+    { id: "chicken-pickle", name: "Chicken Pickle", type: "pickle", price: 120 },
+    { id: "prawns-pickle", name: "Prawns Pickle", type: "pickle", price: 150 },
     { id: "urad-dal-vadiyalu", name: "Urad Dal Vadiyalu", type: "vadiyalu", price: 180 },
     { id: "chilli-vadiyalu", name: "Chilli Vadiyalu", type: "vadiyalu", price: 160 },
   ])
@@ -331,7 +325,7 @@ export default function Home() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
               >
                 <div className="relative h-48">
-                  <Image src="/placeholder.svg?height=300&width=400" alt={product.name} fill className="object-cover" />
+                  <Image src={`/products/${product.id}.png?height=300&width=400`} alt={product.name} fill className="object-cover" />
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-bold text-orange-700">{product.name}</h3>

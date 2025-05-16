@@ -12,7 +12,7 @@ import CustomerTestimonials from "@/components/customer-testimonials"
 import OurStory from "@/components/our-story"
 import ProductQuantityControl from "@/components/product-quantity-control"
 import { useToast } from "@/components/ui/use-toast"
-import SearchBar from "@/components/search-bar"
+// import SearchBar from "@/components/search-bar"
 
 // All products for search
 const allProducts = [
@@ -106,8 +106,8 @@ export default function Home() {
   const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState("")
   const [favoriteProducts, setFavoriteProducts] = useState([
-    { id: "mango-pickle", name: "Mango Pickle", type: "pickle", price: 120 },
-    { id: "garlic-pickle", name: "Garlic Pickle", type: "pickle", price: 150 },
+    { id: "chicken-pickle", name: "Chicken Pickle", type: "pickle", price: 120, image: "/pickles/chickenPickle.png?height=400&width=600", },
+    { id: "prawns-pickle", name: "Prawns Pickle", type: "pickle", price: 150 },
     { id: "urad-dal-vadiyalu", name: "Urad Dal Vadiyalu", type: "vadiyalu", price: 180 },
     { id: "chilli-vadiyalu", name: "Chilli Vadiyalu", type: "vadiyalu", price: 160 },
   ])
@@ -219,14 +219,14 @@ export default function Home() {
           <HeroSection />
         </Suspense>
 
-        <div className="mt-8 mb-4">
+        {/* <div className="mt-8 mb-4">
           <SearchBar
             placeholder="Search for delicious products..."
             className="w-full"
             setSearchQuery={setSearchQuery}
             products={allProducts}
           />
-        </div>
+        </div> */}
 
         <section className="my-16 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-orange-800">Our Specialties</h2>
@@ -379,7 +379,7 @@ export default function Home() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
               >
                 <div className="relative h-48">
-                  <Image src="/placeholder.svg?height=300&width=400" alt={product.name} fill className="object-cover" />
+                  <Image src={`/products/${product.id}.png?height=300&width=400`} alt={product.name} fill className="object-cover" />
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-bold text-orange-700">{product.name}</h3>
