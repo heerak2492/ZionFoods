@@ -288,13 +288,13 @@ export default function VadiyaluPage() {
           </p>
         </div>
 
-        <SearchBar
+        {/* <SearchBar
           placeholder="Search for vadiyalu..."
           className="mb-8"
           onSearch={handleSearch}
           products={vadiyaluProducts}
           setSearchQuery={setSearchQuery}
-        />
+        /> */}
 
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
