@@ -27,9 +27,18 @@ const pickleProducts = [
   {
     id: "prawns-pickle",
     name: "Prawns Pickle",
-    description: "Juicy prawns marinated in a blend of traditional spices for a seafood pickle that packs a punch.",
+    description: "Juicy prawns marinated in a blend of traditional spices for a river pickle that packs a punch.",
     tagline: "Godavari’s Boldest Bite – A Coastal Classic!",
     price: 200,
+    image: "/placeholder.svg?height=400&width=600",
+    type: "pickle",
+  },
+  {
+    id: "gongura-prawn-pickle",
+    name: "Gongura Prawns Pickle",
+    description: "Prawns and gongura cooked in spices and garlic, capturing Andhra’s bold, tangy, and spicy essence.",
+    tagline: "Fierce, Fiery, Flavorful – The Soul of Andhra in Every Bite!",
+    price: 130,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
   },
@@ -104,7 +113,8 @@ const pickleProducts = [
     price: 130,
     image: "/placeholder.svg?height=400&width=600",
     type: "pickle",
-  }
+  },
+  
 ]
 
 

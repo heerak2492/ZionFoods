@@ -39,6 +39,8 @@ export default function CartPage() {
   const [totalAmount, setTotalAmount] = useState(0)
   const [isOrderPlaced, setIsOrderPlaced] = useState(false)
   const { toast } = useToast()
+  const [customizations, setCustomizations] = useState("")
+  const [deliveryAddress, setDeliveryAddress] = useState("")
 
   // Load cart from localStorage and set up event listeners
   useEffect(() => {
@@ -202,6 +204,16 @@ export default function CartPage() {
       return
     }
 
+    if (!deliveryAddress.trim()) {
+      toast({
+        title: "Address required",
+        description: "Please enter your delivery address before placing an order.",
+        variant: "destructive",
+        duration: 3000,
+      })
+      return
+    }
+
     // Create WhatsApp message
     let message = "Hello ZION FOODS, I would like to place an order for:\n\n"
 
@@ -209,7 +221,17 @@ export default function CartPage() {
       message += `${item.name} - ${item.weightLabel} × ${item.quantity} = ₹${(item.price * item.weight * item.quantity) / 100}\n`
     })
 
-    message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}`
+    message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}\n\n`
+
+    // Add customizations if provided
+    if (customizations.trim()) {
+      message += `🎨 CUSTOMIZATIONS:\n${customizations.trim()}\n\n`
+    }
+
+    // Add delivery address
+    message += `📍 DELIVERY ADDRESS:\n${deliveryAddress.trim()}\n\n`
+
+    message += "Thank you!"
 
     // Encode message for WhatsApp URL
     const encodedMessage = encodeURIComponent(message)
@@ -389,6 +411,40 @@ export default function CartPage() {
                   <div className="flex justify-between font-bold text-lg mb-6">
                     <span>Total</span>
                     <span>₹{totalAmount.toFixed(2)}</span>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <label htmlFor="customizations" className="block text-sm font-medium text-gray-700 mb-2">
+                        Special Customizations (Optional)
+                      </label>
+                      <textarea
+                        id="customizations"
+                        rows={3}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                        placeholder="Tell us your preferences: spice level, extra ingredients, less salt, etc."
+                        value={customizations}
+                        onChange={(e) => setCustomizations(e.target.value)}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Example: "Make it extra spicy", "Less salt in mango pickle", "Add extra garlic"
+                      </p>
+                    </div>
+
+                    <div>
+                      <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                        Delivery Address <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        id="address"
+                        rows={3}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                        placeholder="Enter your complete delivery address with pincode"
+                        value={deliveryAddress}
+                        onChange={(e) => setDeliveryAddress(e.target.value)}
+                        required
+                      />
+                    </div>
                   </div>
 
                   <Button className="w-full gradient-btn py-6 text-lg" onClick={placeOrder}>

@@ -108,8 +108,8 @@ export default function Home() {
   const [favoriteProducts, setFavoriteProducts] = useState([
     { id: "chicken-pickle", name: "Chicken Pickle", type: "pickle", price: 120, image: "/pickles/chickenPickle.png?height=400&width=600", },
     { id: "prawns-pickle", name: "Prawns Pickle", type: "pickle", price: 150 },
-    { id: "urad-dal-vadiyalu", name: "Urad Dal Vadiyalu", type: "vadiyalu", price: 180 },
-    { id: "chilli-vadiyalu", name: "Chilli Vadiyalu", type: "vadiyalu", price: 160 },
+    { id: "minapa-vadiyalu", name: "Minapa Vadiyalu", type: "vadiyalu", price: 180 },
+    { id: "pindi-vadiyalu", name: "Pindi Vadiyalu", type: "vadiyalu", price: 160 },
   ])
 
   const handleAddFavorite = (product: any, quantity: number) => {
@@ -218,6 +218,27 @@ export default function Home() {
         <Suspense fallback={<div>Loading...</div>}>
           <HeroSection />
         </Suspense>
+
+        <section className="my-16 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/10 rounded-3xl"></div>
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">🎨 Make It Yours!</h2>
+            <p className="text-xl md:text-2xl mb-4 leading-relaxed">
+              Love it spicy? Want it mild? Need extra garlic or less salt?
+            </p>
+            <p className="text-lg md:text-xl mb-6 opacity-90">
+              <strong>Every pickle and vadiyalu can be customized to your exact taste!</strong>
+               &nbsp;From spice levels to ingredient preferences, we craft each order just the way you like it. Your taste,
+              your way – because authentic flavors should be personal.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+              <span className="bg-white/20 px-4 py-2 rounded-full">🌶️ Spice Level</span>
+              <span className="bg-white/20 px-4 py-2 rounded-full">🧄 Extra Garlic</span>
+              <span className="bg-white/20 px-4 py-2 rounded-full">🧂 Salt Preference</span>
+              <span className="bg-white/20 px-4 py-2 rounded-full">🌿 Special Ingredients</span>
+            </div>
+          </div>
+        </section>
 
         {/* <div className="mt-8 mb-4">
           <SearchBar

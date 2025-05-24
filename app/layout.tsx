@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import AnimatedBackground from "@/components/animated-background"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,7 +28,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          {children}
+          <AnimatedBackground />
+          <div className="relative z-10">{children}</div>
           <Toaster />
         </ThemeProvider>
       </body>

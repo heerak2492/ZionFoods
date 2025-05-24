@@ -16,60 +16,61 @@ import SearchBar from "@/components/search-bar"
 // Product data - in a real app, this would come from an API or database
 const vadiyaluProducts = [
   {
-    id: "urad-dal-vadiyalu",
-    name: "Urad Dal Vadiyalu",
-    description: "Crispy, savory vadiyalu made from fermented urad dal, perfect with rice and ghee.",
-    tagline: "Crispy Clouds of Flavor - The Ultimate Comfort Food!",
-    price: 180, // price per 100g
+    id: "perugu-mirapakayalu",
+    name: "Perugu Mirapakayalu",
+    description: "Sun-dried chillies soaked in tangy buttermilk, crispy and bold in flavor.",
+    tagline: "Crispy, Tangy, Totally Addictive!",
+    price: 180,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
   },
   {
-    id: "rice-vadiyalu",
-    name: "Rice Vadiyalu",
-    description: "Light, crunchy vadiyalu made from fermented rice batter with a hint of spice.",
-    tagline: "Crunch in Every Bite - Irresistibly Light and Crispy!",
+    id: "pindi-vadiyalu",
+    name: "Pindi Vadiyalu",
+    description: "Crispy vadiyalu made with fermented rice flour and light spices.",
+    tagline: "Feather-Light Crunch, Packed with Tradition!",
     price: 160,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
   },
   {
-    id: "chilli-vadiyalu",
-    name: "Chilli Vadiyalu",
-    description: "Spicy vadiyalu with the perfect kick of green chillies and aromatic spices.",
-    tagline: "Fiery Crunch - For Those Who Love a Spicy Kick!",
+    id: "minapa-vadiyalu",
+    name: "Minapa Vadiyalu",
+    description: "Spicy urad dal vadiyalu with green chilies and bold flavor.",
+    tagline: "Bold Heat in Every Bite!",
     price: 170,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
   },
   {
-    id: "garlic-vadiyalu",
-    name: "Garlic Vadiyalu",
-    description: "Flavorful vadiyalu infused with the rich aroma and taste of fresh garlic.",
-    tagline: "Aromatic Crunch - Garlic Lovers Rejoice!",
+    id: "kurkure-vadiyalu",
+    name: "Kurkure Vadiyalu",
+    description: "Crispy rice flour vadiyalu with garlic, spices, and a hint of heat.",
+    tagline: "Garlic-Spiced Goodness You Can’t Resist!",
     price: 190,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
   },
   {
-    id: "mixed-lentil-vadiyalu",
-    name: "Mixed Lentil Vadiyalu",
-    description: "Nutritious vadiyalu made from a blend of different lentils for a unique taste.",
-    tagline: "Protein-Packed Crunch - Healthy Never Tasted So Good!",
+    id: "pesara-vadiyalu",
+    name: "Pesara Vadiyalu",
+    description: "Crunchy moong dal vadiyalu, high in protein and full of flavor.",
+    tagline: "Wholesome Crunch, Guilt-Free Pleasure!",
     price: 200,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
   },
   {
-    id: "coconut-vadiyalu",
-    name: "Coconut Vadiyalu",
-    description: "Sweet and savory vadiyalu with the tropical flavor of fresh coconut.",
-    tagline: "Tropical Delight - A Sweet & Savory Crunch!",
+    id: "gummadi-vadiyalu",
+    name: "Gummadi Vadiyalu",
+    description: "Pumpkin and coconut-based vadiyalu with a hint of natural sweetness.",
+    tagline: "Sweet Meets Savory in Every Crunch!",
     price: 210,
     image: "/placeholder.svg?height=400&width=600",
     type: "vadiyalu",
-  },
+  }
 ]
+
 
 // Weight options in grams with display labels
 const weightOptions = [
@@ -306,7 +307,7 @@ export default function VadiyaluPage() {
             <motion.div key={product.id} id={`product-${product.id}`} variants={itemVariants}>
               <Card className="overflow-hidden h-full flex flex-col">
                 <div className="relative h-64">
-                  <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+                  <Image src={`/products/${product.id}.png`} alt={product.name} fill className="object-cover" />
                 </div>
                 <CardContent className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-orange-700 mb-1">{product.name}</h3>
