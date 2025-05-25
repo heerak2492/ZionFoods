@@ -508,7 +508,7 @@ export default function CartPage() {
                       <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                       <div className="text-xs text-blue-700">
                         <p className="font-medium mb-1">Order Process:</p>
-                        <p>1. Click "Place Order" to send details via WhatsApp</p>
+                        <p>1. Click "Place Order via WhatsApp" to send details via WhatsApp</p>
                         <p>2. We'll confirm shipping charges for your location</p>
                         <p>3. Payment details will be shared after confirmation</p>
                       </div>
