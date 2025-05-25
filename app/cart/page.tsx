@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ChevronLeft, Trash2, ShoppingBag, X } from "lucide-react"
+import { ChevronLeft, Trash2, ShoppingBag, X, Truck, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface CartItem {
   itemId: string
@@ -201,7 +202,6 @@ export default function CartPage() {
         variant: "destructive",
         duration: 3000,
       })
-      return
     }
 
     if (!deliveryAddress.trim()) {
@@ -221,7 +221,8 @@ export default function CartPage() {
       message += `${item.name} - ${item.weightLabel} × ${item.quantity} = ₹${(item.price * item.weight * item.quantity) / 100}\n`
     })
 
-    message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}\n\n`
+    message += `\nSubtotal: ₹${totalAmount.toFixed(2)}\n`
+    message += `Shipping: To be calculated based on delivery location\n\n`
 
     // Add customizations if provided
     if (customizations.trim()) {
@@ -231,7 +232,7 @@ export default function CartPage() {
     // Add delivery address
     message += `📍 DELIVERY ADDRESS:\n${deliveryAddress.trim()}\n\n`
 
-    message += "Thank you!"
+    message += "Please confirm the order and let me know the shipping charges for my location. Thank you!"
 
     // Encode message for WhatsApp URL
     const encodedMessage = encodeURIComponent(message)
@@ -408,12 +409,63 @@ export default function CartPage() {
 
                   <Separator className="my-4" />
 
-                  <div className="flex justify-between font-bold text-lg mb-6">
-                    <span>Total</span>
-                    <span>₹{totalAmount.toFixed(2)}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-lg">
+                      <span className="font-medium">Subtotal</span>
+                      <span className="font-bold">₹{totalAmount.toFixed(2)}</span>
+                    </div>
+
+                    {/* Beautiful Shipping Section */}
+                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-4 rounded-lg border border-orange-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="p-2 bg-orange-100 rounded-full">
+                          <Truck className="h-4 w-4 text-orange-600" />
+                        </div>
+                        <span className="font-medium text-orange-800">Shipping Information</span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button className="p-2 bg-orange-100 rounded-full hover:bg-orange-200 transition-colors">
+                                <Info className="h-4 w-4 text-orange-600" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              side="top"
+                              align="start"
+                              className="max-w-[280px] p-3 text-sm bg-white border border-orange-200 shadow-lg"
+                              sideOffset={8}
+                            >
+                              <div className="space-y-2">
+                                <p className="font-medium text-orange-800">How shipping works:</p>
+                                <ul className="space-y-1 text-gray-700">
+                                  <li>• Calculated based on your location</li>
+                                  <li>• Depends on total order weight</li>
+                                  <li>• Confirmed via WhatsApp before payment</li>
+                                  <li>• No hidden charges</li>
+                                </ul>
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        <span className="text-sm text-orange-600">Based on delivery location & weight</span>
+                      </div>
+                    </div>
+
+                    <Separator className="my-3" />
+
+                    <div className="flex justify-between font-bold text-xl text-orange-800 bg-orange-50 p-3 rounded-lg">
+                      <span>Total</span>
+                      <div className="text-right">
+                        <div>₹{totalAmount.toFixed(2)}</div>
+                        <div className="text-xs font-normal text-orange-600">+ shipping charges</div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-4 mt-6">
                     <div>
                       <label htmlFor="customizations" className="block text-sm font-medium text-gray-700 mb-2">
                         Special Customizations (Optional)
@@ -447,13 +499,21 @@ export default function CartPage() {
                     </div>
                   </div>
 
-                  <Button className="w-full gradient-btn py-6 text-lg" onClick={placeOrder}>
+                  <Button className="w-full gradient-btn py-6 text-lg mt-6" onClick={placeOrder}>
                     Place Order via WhatsApp
                   </Button>
 
-                  <p className="text-xs text-gray-500 text-center mt-4">
-                    By placing your order, you'll be redirected to WhatsApp to confirm your purchase with ZION FOODS.
-                  </p>
+                  <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-start gap-2">
+                      <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div className="text-xs text-blue-700">
+                        <p className="font-medium mb-1">Order Process:</p>
+                        <p>1. Click "Place Order" to send details via WhatsApp</p>
+                        <p>2. We'll confirm shipping charges for your location</p>
+                        <p>3. Payment details will be shared after confirmation</p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
