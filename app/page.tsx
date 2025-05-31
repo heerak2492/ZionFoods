@@ -408,7 +408,7 @@ export default function Home() {
                   <div className="flex justify-between items-center mt-3">
                     <span className="text-lg font-bold">₹{product.price}/100g</span>
                     <div className="flex gap-2">
-                      <Link href={`/${product.type}s`}>
+                      <Link href={product.type==='pickle'?'/pickles':'/vadiyalu'}>
                         <Button size="sm" variant="outline" className="outline-btn">
                           View
                         </Button>
