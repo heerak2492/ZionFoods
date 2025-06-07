@@ -35,6 +35,10 @@ interface CartItem {
   type: string
 }
 
+const getProductImage = (productId: string) => {
+  return `/products/${productId}.png?height=200&width=200`
+}
+
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
@@ -334,10 +338,13 @@ export default function CartPage() {
                       <div className="cart-item-mobile">
                         <div className="relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
                           <Image
-                            src="/placeholder.svg?height=200&width=200"
+                            src={getProductImage(item.id) || "/placeholder.svg"}
                             alt={item.name}
                             fill
                             className="object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = "/placeholder.svg?height=200&width=200"
+                            }}
                           />
                         </div>
 

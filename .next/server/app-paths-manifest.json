@@ -1,6 +1,6 @@
 {
+  "/cart/page": "app/cart/page.js",
   "/page": "app/page.js",
-  "/pickles/page": "app/pickles/page.js",
   "/vadiyalu/page": "app/vadiyalu/page.js",
-  "/cart/page": "app/cart/page.js"
+  "/pickles/page": "app/pickles/page.js"
 }
