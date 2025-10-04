@@ -12,6 +12,7 @@ import CustomerTestimonials from "@/components/customer-testimonials"
 import OurStory from "@/components/our-story"
 import ProductQuantityControl from "@/components/product-quantity-control"
 import { useToast } from "@/components/ui/use-toast"
+import SiteFooter from "@/components/site-footer"
 // import SearchBar from "@/components/search-bar"
 
 // All products for search
@@ -434,7 +435,8 @@ export default function Home() {
         </section>
       </div>
 
-      <footer className="bg-orange-800 text-white py-8">
+      <SiteFooter />
+      {/* <footer className="bg-orange-800 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
@@ -450,7 +452,7 @@ export default function Home() {
             <p>© {new Date().getFullYear()} ZION FOODS. All rights reserved.</p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </main>
   )
 }
