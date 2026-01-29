@@ -32,7 +32,7 @@ export default function Logo({ white = false, onClick }: LogoProps) {
     // </svg>
     <div className="relative h-20 w-20">
       <Image
-        src="/zionFoodLogo.jpg"
+        src="/latestLogo.jpeg"
         alt="Delicious Pickles"
         fill
         className="object-cover rounded-2xl shadow-xl"
